@@ -4,7 +4,7 @@ import numpy as np
 class KNNClassifier():
     def __init__(self, n_neighbors=5, n_similar=5):
         self.n_neighbors = n_neighbors
-        self.n_similar = n_similar  # 展示的最近的几张图片的数目
+        self.n_similar = min(n_similar, n_neighbors)  # 展示的最近的几张图片的数目,不能超过k
         self.n_similar_index = []
 
     def fit(self, X, y):
@@ -27,9 +27,10 @@ class KNNClassifier():
         dist_list = list(np.sqrt(((self._X - x) ** 2).sum(axis=1)))
         # (距离，标签，index)三元组，其中index用于定位原来
         dist_list = list(zip(dist_list, self._y, list(x for x in range(0, len(self._X)))))
-        dist_list.sort()
         # 暂时不考虑第k和第k+1个元素的距离相等的情况
-        # 返回前k个数据点中每一种标签的数目
+        # 首先通过nsmallest函数获得最近的k个元素
+        dist_list = nsmallest(k, dist_list)
+        # 再通过np.unique函数返回前k个数据点中每一种标签的数目
         label, counts = np.unique([x[1] for x in dist_list[:k]], return_counts=True)
         lable_counts = list(zip(counts, label))
         # 找到数目最多的标签
