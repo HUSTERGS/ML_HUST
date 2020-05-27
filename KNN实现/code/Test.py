@@ -2,6 +2,7 @@ from KNNClassifier import KNNClassifier
 import matplotlib.pyplot  as plt
 from sklearn.datasets import fetch_openml
 
+
 mnist = fetch_openml('mnist_784')
 X = mnist.data
 y = mnist.target

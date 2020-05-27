@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from heapq import nsmallest
 
-class KNNClassifier():
+
+class KNNClassifier:
     def __init__(self, n_neighbors=5, n_similar=5):
         self.n_neighbors = n_neighbors
         self.n_similar = min(n_similar, n_neighbors)  # 展示的最近的几张图片的数目,不能超过k
@@ -47,7 +49,6 @@ class KNNClassifier():
             k -= 1
         self.n_similar_index = [x[2] for x in dist_list[:self.n_similar]]  # 选出最近的n的点的index
         return result
-
 
     def draw_closest_with_data(self, x):
         """
